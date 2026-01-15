@@ -2,6 +2,14 @@
   "name": "myprojects",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://github.com/nafortier/FortierWebAPI#readme",
+  "bugs": {
+    "url": "https://github.com/nafortier/FortierWebAPI/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nafortier/FortierWebAPI.git"
+  },
   "license": "ISC",
   "author": "",
   "type": "commonjs",
