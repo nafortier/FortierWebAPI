@@ -17,7 +17,7 @@ router.post("/", async (req,res)=>{
     }
 });
 
-
+//get
 router.get("/", async (req,res)=>{
     try{
         console.log("Fetch working");
@@ -28,6 +28,40 @@ router.get("/", async (req,res)=>{
     }catch(err)
     {
         res.status(500).json({ok:false, error: "Failed to fetch High Scores"});
+    }
+});
+
+
+//Delete
+
+router.delete("/:id", async (req,res)=>{
+    try{
+        const {id} = req.params;
+        const deleted = await HighScore.findByIdAndDelete(id);
+
+        if(!deleted){
+            return res.status(404).json({ok:false, error: "Score not found"});
+        }
+
+        res.json({ok:true, deletedId:id});
+    }catch(err)
+    {
+        res.status(400).json({ok:false, error: "Failed to Delete"});
+    }
+});
+
+//get edit
+
+router.get("/:id", async (req,res)=>{
+    try{
+        const score = await HighScore.findById(req.params.id);
+
+        if(!score){
+            return res.status(404).json({ok:false, error:"Not found"})
+        }
+        res.json(score);
+    } catch{
+        return res.status(400).json({ok:false, error:"Invalid Id"})
     }
 });
 

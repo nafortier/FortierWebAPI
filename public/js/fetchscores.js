@@ -18,7 +18,33 @@ async function loadScores(){
         scores.forEach(score => {
             const li = document.createElement("li");
 
-            li.textContent = `${score.playername} - ${score.score} - ${score.level}`;
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Delete";
+            deleteBtn.type = "button";
+
+            const editBtn = document.createElement("button");
+            editBtn.textContent = "Edit";
+            editBtn.type = "button";
+
+            
+
+            //add func call
+            deleteBtn.addEventListener("click", async ()=>{
+                if(!confirm(`Delete ${score.playername}'s score`)){
+                    return; 
+                }
+                await deleteScore(score._id);
+                loadScores();
+            });
+
+            editBtn.addEventListener("click", async ()=>{
+                window.location.href = `/edit.html?id=${encodeURIComponent(score._id)}`
+            });
+
+            li.textContent = `${score.playername} - ${score.score} - ${score.level} | `;
+
+            li.appendChild(editBtn);
+            li.appendChild(deleteBtn);
             scoreList.appendChild(li);
         });
 
@@ -48,9 +74,21 @@ form.addEventListener("submit", async (e)=>{
         form.reset()
         loadScores();
     }catch(err){
-        statusDisplay.textContent = "Failed to submit score"
+        statusDisplay.textContent = "Failed to submit score";
     }
 });
+
+async function deleteScore(id){
+    statusDisplay.textContent = "Deleting...";
+
+    const res = await fetch(`/api/highscores/${id}`, {method:"DELETE"});
+
+    if(!res.ok){
+        statusDisplay.textContent = "Delete failed";
+    }
+
+    statusDisplay.textContent = "Score Deleted.";
+}
 
 
 
