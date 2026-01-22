@@ -3,25 +3,25 @@ const HighScore = require("../models/HighScore");
 
 const router = express.Router();
 
-router.post("/", async (req, res)=>{
-    console.log("Working")
+router.post("/", async (req,res)=>{
+    
     try{
         const {playername, score, level} = req.body;
-
         const createdScore = await HighScore.create({playername, score, level});
 
         res.status(201).json({ok:true, createdScore});
 
     } catch(err)
     {
-        res,status(400).json({ok:false, error:"Invalid High Score"});
+        res.status(400).json({ok:false, error:"Invalid High Score"});
     }
 });
 
 
-router.get("/", async (req)=>{
+router.get("/", async (req,res)=>{
     try{
-        const scores = (await HighScore.find())
+        console.log("Fetch working");
+        const scores = await HighScore.find()
         .sort({score:-1,createdAt:1})
         .limit(10);
         res.json(scores);
