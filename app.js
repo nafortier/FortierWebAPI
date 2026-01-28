@@ -10,6 +10,8 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const highScoreRoutes = require("./routes/highscores");
 
+const authRoutes = require("./routes/auth");
+
 //static route
 //Quick Test that env Variables are available
 if(!MONGO_URI){
@@ -114,6 +116,7 @@ app.get("/api/gamesprofile/:game", async (req,res)=>{
 
 //connect with router
 app.use("/api/highscores", highScoreRoutes);
+app.use("/api/auth", authRoutes);
 
 //Command that starts the server
 // app.listen(PORT, ()=>{

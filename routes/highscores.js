@@ -50,6 +50,8 @@ router.delete("/:id", async (req,res)=>{
     }
 });
 
+
+
 //get edit
 
 router.get("/:id", async (req,res)=>{
@@ -63,6 +65,40 @@ router.get("/:id", async (req,res)=>{
     } catch{
         return res.status(400).json({ok:false, error:"Invalid Id"})
     }
+});
+
+router.put("/:id", async (req,res)=>{
+    try{
+        //Update High Score Entry
+        const {id} = req.params;
+
+
+        const payload = {};
+        if (typeof req.body.playername === "string"){
+            payload.playername = req.body.playername;
+        }
+        if (typeof req.body.score === "number"){
+            payload.score = req.body.score;
+        }
+        if (typeof req.body.level === "number"){
+            payload.level = req.body.level;
+        }
+
+        const updatedEntry = await HighScore.findByIdAndUpdate(id,payload,{
+            new:true,
+            runValidators:true
+        });
+
+        if(!updatedEntry){
+            res.status(404).json({ok:false, error:"Score Entry not found"})
+        }
+        res.json({ok:true, updatedEntry});
+       // res.redirect("api/highscores.html");
+
+    } catch(err){
+        res.status(400).json({ok:false, error:"Update Failed"})
+    }
+
 });
 
 module.exports = router;
