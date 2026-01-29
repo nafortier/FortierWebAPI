@@ -1,13 +1,24 @@
 const express = require("express");
 const HighScore = require("../models/HighScore");
+const requireAuth = require("../middleware/requireauth")
 
 const router = express.Router();
+
+
+
+router.use(requireAuth);
+
+
+
+
 
 router.post("/", async (req,res)=>{
     
     try{
+
+        const userId = req.user.sub;
         const {playername, score, level} = req.body;
-        const createdScore = await HighScore.create({playername, score, level});
+        const createdScore = await HighScore.create({userId, playername, score, level});
 
         res.status(201).json({ok:true, createdScore});
 
@@ -20,8 +31,11 @@ router.post("/", async (req,res)=>{
 //get
 router.get("/", async (req,res)=>{
     try{
+        //
+        const userId = req.user.sub;
         console.log("Fetch working");
-        const scores = await HighScore.find()
+        //
+        const scores = await HighScore.find({userId})
         .sort({score:-1,createdAt:1})
         .limit(10);
         res.json(scores);
@@ -36,8 +50,9 @@ router.get("/", async (req,res)=>{
 
 router.delete("/:id", async (req,res)=>{
     try{
+        const userId = req.user.sub;
         const {id} = req.params;
-        const deleted = await HighScore.findByIdAndDelete(id);
+        const deleted = await HighScore.findByIdAndDelete({_id:id, userId});
 
         if(!deleted){
             return res.status(404).json({ok:false, error: "Score not found"});
@@ -56,6 +71,7 @@ router.delete("/:id", async (req,res)=>{
 
 router.get("/:id", async (req,res)=>{
     try{
+       
         const score = await HighScore.findById(req.params.id);
 
         if(!score){
@@ -71,7 +87,7 @@ router.put("/:id", async (req,res)=>{
     try{
         //Update High Score Entry
         const {id} = req.params;
-
+        const userId = req.user.sub;
 
         const payload = {};
         if (typeof req.body.playername === "string"){
@@ -84,7 +100,7 @@ router.put("/:id", async (req,res)=>{
             payload.level = req.body.level;
         }
 
-        const updatedEntry = await HighScore.findByIdAndUpdate(id,payload,{
+        const updatedEntry = await HighScore.findByIdAndUpdate({_id:id, userId},payload,{
             new:true,
             runValidators:true
         });

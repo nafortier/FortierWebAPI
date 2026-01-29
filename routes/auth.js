@@ -8,8 +8,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 if(!JWT_SECRET)throw new Error("Missing JWT Secret");
 
 router.post("/register", async (req,res)=>{
+    console.log("Register")
     try{
         const {username, password} = req.body; 
+        console.log(req.body);
 
         if(typeof username !== "string" || typeof password !== "string"){
             return res.status(400).json({ok:false, error:"username and password required"});
@@ -20,13 +22,50 @@ router.post("/register", async (req,res)=>{
             return res.status(400).json({ok:false, error:"User already exists"});
         }
 
-        const passwordHash = await bycrypt.hash(password, 10);
+        const passwordHash = await bcrypt.hash(password, 10);
 
-        await User.create({username, passwordHash});
+        await User.create({username, password:passwordHash});
 
         res.status(201).json({ok:true});
-    }catch{
+    }catch(err){
+        console.log(err);
         res.status(500).json({ok:false, error:"Failed to register new user"});
+    }
+});
+
+
+router.post("/login", async (req,res)=>{
+    console.log("login")
+    try{
+
+        const {username, password} = req.body; 
+
+        //console.log(req.body);
+       
+        const user = await User.findOne({username});
+        if(!user){
+            return res.status(401).json({ok:false, error:"Invalid credentials"});
+        }
+        const ok = await bcrypt.compare(password, user.password);
+
+        if (!ok){
+            return res.status(401).json({ok:false, error:"Password does not match"});
+        }
+
+        const token = jwt.sign({
+            sub:user._id.toString(),
+            username:user.username,
+
+
+        },
+        JWT_SECRET,
+        {expiresIn:"2h"}
+        );
+
+        res.json({ok:true, token});
+    }catch(err){
+        console.log(err);
+        res.status(500).json({ok:false, error:"Failed to login user"});
     }
 });
 

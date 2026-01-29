@@ -2,12 +2,28 @@ const scoreList = document.getElementById("scoreList");
 const statusDisplay = document.getElementById("status");
 const form = document.getElementById("scoreForm");
 
+const token = localStorage.getItem("token");
+if(!token){
+    window.location.href = "/login.html";
+}
+
+function authHeaders(){
+    return{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer" + token
+    }
+}
 async function loadScores(){
     scoreList.innerHTML = "";
     statusDisplay.textContent = "Loading Scores...";
 
     try{
-        const res = await fetch("/api/highscores");
+        const res = await fetch("/api/highscores", {headers:{"Authorization":"Bearer" + token}});
+        if(res.status === 401){
+            localStorage.removeItem("token");
+            window.location.href = "/login.html";
+            return;
+        }
         const scores = await res.json();
 
         if(scores.length === 0){
