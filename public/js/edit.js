@@ -5,35 +5,34 @@ const cancelBtn = document.getElementById("cancelBtn");
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-async function loadScore(){
-    const res = await fetch(`/api/highscores/${encodeURIComponent(id)}`)
+async function loadGame(){
+    const res = await fetch(`/api/games/${encodeURIComponent(id)}`)
 
-    const score = await res.json();
+    const game = await res.json();
 
-    document.getElementById("playername").value = score.playername ?? "";
-    document.getElementById("score").value = score.score ?? 0;
-    document.getElementById("level").value = score.level ?? "";
+    document.getElementById("gametitle").value = game.gametitle ?? "";
+
 }
 
 
 form.addEventListener("submit", async (e)=>{
     e.preventDefault();
 
-    const playername = document.getElementById("playername").value.trim();
-    const score = Number(document.getElementById("score").value);
-    const level = Number(document.getElementById("level").value);
+    const gametitle = document.getElementById("gametitle").value.trim();
 
-    const res = await fetch(`/api/highscores/${encodeURIComponent(id)}`, {
+    
+    const res = await fetch(`/api/games/${encodeURIComponent(id)}`, {
         method:"PUT",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({playername, score, level}),
+        body:JSON.stringify({gametitle}),
     });
 
-    window.location.href = "/highscores";
+
+  //  window.location.href = "/thirdpage";
 });
 
 
 cancelBtn.addEventListener("click", ()=>{
-      window.location.href = "/highscores.html";
+      window.location.href = "/thirdpage.html";
 });
-loadScore();
+loadGame();

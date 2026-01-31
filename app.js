@@ -9,6 +9,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 
 const highScoreRoutes = require("./routes/highscores");
+const GamesRoutes = require("./routes/games");
 
 //static route
 //Quick Test that env Variables are available
@@ -58,7 +59,7 @@ app.get("/api/data", (req,res)=>{
     });
 });*/
 
-app.get("/api/games", (req,res)=>{
+/*app.get("/api/games", (req,res)=>{
     fs.readFile("data.json", "utf-8", (err,data)=>{
         if (err){
             res.status(500).json({error:"Failed to read data file"});
@@ -67,7 +68,7 @@ app.get("/api/games", (req,res)=>{
 
         res.json(JSON.parse(data));
     });
-});
+});*/
 
 let leaderboard = [
     {player:"Corey", score:1200},
@@ -114,6 +115,7 @@ app.get("/api/gamesprofile/:game", async (req,res)=>{
 
 //connect with router
 app.use("/api/highscores", highScoreRoutes);
+app.use("/api/games", GamesRoutes);
 
 //Command that starts the server
 // app.listen(PORT, ()=>{

@@ -10,14 +10,25 @@
     <h1>Welcome to the Third page</h1>
    
     <h4>Add Entry To Favorite Games</h4>
-    <p>Game Title:</p>
-    <input type="text" name="username">
-    <input type="submit" value="Submit">
-    <br>
+    <p>Games:</p>
+
+
+    <form id="gameForm">
+        <input type="text" id="gametitle" placeholder="Game Title.." required/><br>
+    
+        <button type="submit">Submit Game</button>
+    </form>
+
+    <p id="status"></p>
+
+    <ol id="gameList"></ol>
+
+    <script src="js/fetchgames.js"></script>
+
     <a href="index.html">Link to Main Page</a> 
     <br>
     <a href="/secondpage">Link to Login Page</a>
-    <script src="js/filefetch.js"></script>
+    
 
 </body>
 </html>
