@@ -73,7 +73,7 @@ router.put("/:id", async (req,res)=>{
 
         const payload = {};
         if (typeof req.body.gametitle === "string"){
-            payload.playername = req.body.playername;
+            payload.gametitle = req.body.gametitle;
         }
        
 

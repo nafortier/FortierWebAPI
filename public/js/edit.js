@@ -28,7 +28,7 @@ form.addEventListener("submit", async (e)=>{
     });
 
 
-  //  window.location.href = "/thirdpage";
+    window.location.href = "/thirdpage.html";
 });
 
 
