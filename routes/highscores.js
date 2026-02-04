@@ -17,6 +17,7 @@ router.post("/", async (req,res)=>{
     try{
 
         const userId = req.user.sub;
+       //console.log(userId)
         const {playername, score, level} = req.body;
         const createdScore = await HighScore.create({userId, playername, score, level});
 

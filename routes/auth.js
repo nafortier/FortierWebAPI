@@ -44,12 +44,16 @@ router.post("/login", async (req,res)=>{
        
         const user = await User.findOne({username});
         if(!user){
+            //console.log("1")
             return res.status(401).json({ok:false, error:"Invalid credentials"});
+           
         }
         const ok = await bcrypt.compare(password, user.password);
 
         if (!ok){
+            //console.log("2")
             return res.status(401).json({ok:false, error:"Password does not match"});
+            
         }
 
         const token = jwt.sign({
@@ -61,7 +65,7 @@ router.post("/login", async (req,res)=>{
         JWT_SECRET,
         {expiresIn:"2h"}
         );
-
+        //console.log("ok")
         res.json({ok:true, token});
     }catch(err){
         console.log(err);

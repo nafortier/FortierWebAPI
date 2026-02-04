@@ -10,7 +10,7 @@ if(!token){
 function authHeaders(){
     return{
         "Content-Type":"application/json",
-        "Authorization":"Bearer" + token
+        "Authorization":"Bearer " + token
     }
 }
 async function loadScores(){
@@ -18,7 +18,7 @@ async function loadScores(){
     statusDisplay.textContent = "Loading Scores...";
 
     try{
-        const res = await fetch("/api/highscores", {headers:{"Authorization":"Bearer" + token}});
+        const res = await fetch("/api/highscores", {headers:{"Authorization":"Bearer " + token}});
         if(res.status === 401){
             localStorage.removeItem("token");
             window.location.href = "/login.html";
@@ -83,7 +83,7 @@ form.addEventListener("submit", async (e)=>{
     try{
         await fetch("/api/highscores", {
             method:"POST",
-            headers:{"Content-Type":"application/json"},
+            headers:authHeaders(),
             body:JSON.stringify({playername,score,level})
         });
 
@@ -106,6 +106,9 @@ async function deleteScore(id){
     statusDisplay.textContent = "Score Deleted.";
 }
 
-
+document.getElementById("logoutBtn").addEventListener("click", ()=>{
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+})
 
 loadScores();

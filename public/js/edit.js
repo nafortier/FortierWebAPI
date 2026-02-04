@@ -1,13 +1,22 @@
 const form = document.getElementById("editForm");
 const cancelBtn = document.getElementById("cancelBtn");
-
+const token = localStorage.getItem("token");
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-async function loadScore(){
-    const res = await fetch(`/api/highscores/${encodeURIComponent(id)}`)
+if(!token){
+    window.location.href = "/login.html";
+}
 
+
+async function loadScore(){
+    const res = await fetch(`/api/highscores/${encodeURIComponent(id)}`, {headers:{"Authorization":"Bearer " + token}})
+    if(res.status === 401){
+            localStorage.removeItem("token");
+            window.location.href = "/login.html";
+            return;
+        }
     const score = await res.json();
 
     document.getElementById("playername").value = score.playername ?? "";
@@ -25,7 +34,7 @@ form.addEventListener("submit", async (e)=>{
 
     const res = await fetch(`/api/highscores/${encodeURIComponent(id)}`, {
         method:"PUT",
-        headers:{"Content-Type":"application/json"},
+        headers:{"Content-Type":"application/json","Authorization":"Bearer " + token},
         body:JSON.stringify({playername, score, level}),
     });
 
