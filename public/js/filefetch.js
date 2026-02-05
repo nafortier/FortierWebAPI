@@ -2,12 +2,22 @@ const gameList = document.getElementById("gameList");
 const statusDisplay = document.getElementById("status");
 
 
+const token = localStorage.getItem("token");
+
+if(!token){
+    //indow.location.href = "/login.html";
+    statusDisplay.textContent = "Not Logged In"
+}
 async function loadGames(){
     gameList.innerHTML = "";
     statusDisplay.textContent = "Loading Games...";
+    if(!token){
+    //indow.location.href = "/login.html";
+    statusDisplay.textContent = "Not Logged In"
+    } else{
 
     try{
-        const res = await fetch("/api/games");
+        const res = await fetch("/api/games", {headers:{"Authorization":"Bearer " + token}});
         const games = await res.json();
 
         
@@ -35,8 +45,10 @@ async function loadGames(){
         statusDisplay.textContent = `Loaded ${games.length} games`;
     }
     catch(err){
+        
         console.log(err);
         statusDisplay.textContent = "Failed to load games"
+    }
     }
 }
 

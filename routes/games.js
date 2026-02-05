@@ -1,13 +1,15 @@
 const express = require("express");
 const Game = require("../models/Game");
+const requireAuth = require("../middleware/requireauth")
 
 const router = express.Router();
-
+router.use(requireAuth);
 router.post("/", async (req,res)=>{
     
     try{
+        const userId = req.user.sub;
         const {gametitle} = req.body;
-        const createdGame = await Game.create({gametitle});
+        const createdGame = await Game.create({userId, gametitle});
 
         res.status(201).json({ok:true, createdGame});
 
@@ -20,8 +22,9 @@ router.post("/", async (req,res)=>{
 //get
 router.get("/", async (req,res)=>{
     try{
+        const userId = req.user.sub;
         console.log("Fetch working");
-        const games = await Game.find()
+        const games = await Game.find({userId})
         //.sort({score:-1,createdAt:1})
         .limit(10);
         res.json(games);
@@ -36,8 +39,9 @@ router.get("/", async (req,res)=>{
 
 router.delete("/:id", async (req,res)=>{
     try{
+        const userId = req.user.sub;
         const {id} = req.params;
-        const deleted = await Game.findByIdAndDelete(id);
+        const deleted = await Game.findByIdAndDelete({_id:id, userId});
 
         if(!deleted){
             return res.status(404).json({ok:false, error: "Game not found"});
@@ -69,7 +73,7 @@ router.put("/:id", async (req,res)=>{
     try{
        
         const {id} = req.params;
-        //const userId = req.user.sub;
+        const userId = req.user.sub;
 
         const payload = {};
         if (typeof req.body.gametitle === "string"){
@@ -77,7 +81,7 @@ router.put("/:id", async (req,res)=>{
         }
        
 
-        const updatedEntry = await Game.findByIdAndUpdate(id,payload,{
+        const updatedEntry = await Game.findByIdAndUpdate({_id:id, userId},payload,{
             new:true,
             runValidators:true
         });

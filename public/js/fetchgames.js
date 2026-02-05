@@ -2,12 +2,29 @@ const gameList = document.getElementById("gameList");
 const statusDisplay = document.getElementById("status");
 const form = document.getElementById("gameForm");
 
+const token = localStorage.getItem("token");
+if(!token){
+    window.location.href = "/secondpage.html";
+}
+
+function authHeaders(){
+    return{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + token
+    }
+}
+
 async function loadGames(){
     gameList.innerHTML = "";
     statusDisplay.textContent = "Loading Games...";
 
     try{
-        const res = await fetch("/api/games");
+        const res = await fetch("/api/games", {headers:{"Authorization":"Bearer " + token}});
+        if(res.status === 401){
+            localStorage.removeItem("token");
+            window.location.href = "/secondpage.html";
+            return;
+        }
         const games = await res.json();
 
         
@@ -69,7 +86,7 @@ form.addEventListener("submit", async (e)=>{
     try{
         await fetch("/api/games", {
             method:"POST",
-            headers:{"Content-Type":"application/json"},
+            headers:authHeaders(),
             body:JSON.stringify({gametitle})
         });
 
@@ -93,6 +110,9 @@ async function deleteGame(id){
     statusDisplay.textContent = "Game Deleted.";
 }
 
-
+document.getElementById("logoutBtn").addEventListener("click", ()=>{
+    localStorage.removeItem("token");
+    window.location.href = "/secondpage.html";
+})
 
 loadGames();

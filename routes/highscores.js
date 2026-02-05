@@ -1,13 +1,16 @@
 const express = require("express");
 const HighScore = require("../models/HighScore");
-
+const requireAuth = require("../middleware/requireauth")
 const router = express.Router();
 
+
+router.use(requireAuth);
 router.post("/", async (req,res)=>{
-    
+  
     try{
+        const userId = req.user.sub;
         const {playername, score, level} = req.body;
-        const createdScore = await HighScore.create({playername, score, level});
+        const createdScore = await HighScore.create({userId, playername, score, level});
 
         res.status(201).json({ok:true, createdScore});
 

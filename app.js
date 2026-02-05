@@ -11,6 +11,14 @@ const MONGO_URI = process.env.MONGO_URI;
 const highScoreRoutes = require("./routes/highscores");
 const GamesRoutes = require("./routes/games");
 
+const authRoutes = require("./routes/auth");
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
+
+app.use("/api/auth", authRoutes);
+app.use("/api/games", require("./routes/games") );
 //static route
 //Quick Test that env Variables are available
 if(!MONGO_URI){
@@ -30,8 +38,7 @@ async function connectToMongo(){
 
 
 
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json());
+
 
 app.get("/", (req,res)=>{
     res.send("The server is running")
@@ -114,8 +121,8 @@ app.get("/api/gamesprofile/:game", async (req,res)=>{
 
 
 //connect with router
-app.use("/api/highscores", highScoreRoutes);
-app.use("/api/games", GamesRoutes);
+//app.use("/api/highscores", highScoreRoutes);
+//app.use("/api/games", GamesRoutes);
 
 //Command that starts the server
 // app.listen(PORT, ()=>{
