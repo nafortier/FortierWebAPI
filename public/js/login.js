@@ -1,3 +1,4 @@
+//Functionality for logging in
 document.getElementById("loginForm").addEventListener("submit", async (e)=>{
     e.preventDefault();
 

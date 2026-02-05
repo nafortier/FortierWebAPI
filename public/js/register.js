@@ -1,3 +1,4 @@
+//Functionality for registering
 document.getElementById("regForm").addEventListener("submit", async (e)=>{
     e.preventDefault();
 

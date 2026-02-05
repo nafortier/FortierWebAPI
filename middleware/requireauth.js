@@ -1,6 +1,8 @@
+//Use Jsonwebtoken 
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 
+//forces authentication 
 module.exports = function requireAuth(req, res, next){
     const header = req.headers.authorization || "";
     const [type, token] = header.split(" ");

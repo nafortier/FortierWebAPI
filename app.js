@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 
-const highScoreRoutes = require("./routes/highscores");
+
 const GamesRoutes = require("./routes/games");
 
 const authRoutes = require("./routes/auth");
@@ -57,50 +57,7 @@ app.get("/thirdpage", (req,res)=>{
     res.sendFile(path.join(__dirname, "public", "thirdpage.html"));
 });
 
-/*/JSON
-app.get("/api/data", (req,res)=>{
-    res.json({player:"JordanTron", 
-    timestamp:new Date(),
-    games:["Fortnite", "Arc Raiders", "Portal2"]
 
-    });
-});*/
-
-/*app.get("/api/games", (req,res)=>{
-    fs.readFile("data.json", "utf-8", (err,data)=>{
-        if (err){
-            res.status(500).json({error:"Failed to read data file"});
-            return;
-        }
-
-        res.json(JSON.parse(data));
-    });
-});*/
-
-let leaderboard = [
-    {player:"Corey", score:1200},
-    {player:"Nate", score:1100}
-]
-
-app.post("/leaderboard", (req,res)=>{
-    const {player, score} = req.body;
-    //validation
-
-    if (typeof player != "string" || typeof score != "number"){
-        return res.status(400).json({
-            ok:false,
-            error:"Expected JSON body: {player:string, score:number}"
-        });
-    }
-
-    leaderboard.push({player,score});
-
-    leaderboard.sort((a,b)=>b.score - a.score);
-
-    console.log(leaderboard);
-    res.status(201).json({ok:true, leaderboard});
-
-});
 //Start server
 //Requests using MongoDB Database and Mongoose
 const gameSchema = new mongoose.Schema({},{strict:false});
@@ -120,14 +77,6 @@ app.get("/api/gamesprofile/:game", async (req,res)=>{
 });
 
 
-//connect with router
-//app.use("/api/highscores", highScoreRoutes);
-//app.use("/api/games", GamesRoutes);
-
-//Command that starts the server
-// app.listen(PORT, ()=>{
-//     console.log(`Running on port: ${PORT}`);
-// });
 
 //Connection with Database and Sever
 connectToMongo().then(()=>{

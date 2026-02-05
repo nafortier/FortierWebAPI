@@ -4,12 +4,14 @@ const requireAuth = require("../middleware/requireauth")
 
 const router = express.Router();
 router.use(requireAuth);
+
+//post gets deletes and put functionalities for the games
 router.post("/", async (req,res)=>{
     
     try{
         const userId = req.user.sub;
-        const {gametitle} = req.body;
-        const createdGame = await Game.create({userId, gametitle});
+        const {gametitle, developer} = req.body;
+        const createdGame = await Game.create({userId, gametitle, developer});
 
         res.status(201).json({ok:true, createdGame});
 
@@ -78,6 +80,9 @@ router.put("/:id", async (req,res)=>{
         const payload = {};
         if (typeof req.body.gametitle === "string"){
             payload.gametitle = req.body.gametitle;
+        }
+        if (typeof req.body.developer === "string"){
+            payload.developer = req.body.developer;
         }
        
 

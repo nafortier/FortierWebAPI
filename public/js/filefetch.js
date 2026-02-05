@@ -1,3 +1,5 @@
+
+// FETCH FOR THE MAIN PAGE
 const gameList = document.getElementById("gameList");
 const statusDisplay = document.getElementById("status");
 
@@ -5,14 +7,13 @@ const statusDisplay = document.getElementById("status");
 const token = localStorage.getItem("token");
 
 if(!token){
-    //indow.location.href = "/login.html";
+    //WILL NOT SHOW ENTRIES IF NOT LOGGED IN
     statusDisplay.textContent = "Not Logged In"
 }
 async function loadGames(){
     gameList.innerHTML = "";
     statusDisplay.textContent = "Loading Games...";
     if(!token){
-    //indow.location.href = "/login.html";
     statusDisplay.textContent = "Not Logged In"
     } else{
 
@@ -32,11 +33,9 @@ async function loadGames(){
 
            
 
-            
+            //loop through each game and list the fields
 
-        
-
-            li.textContent = `${game.gametitle} | `;
+            li.textContent = `${game.gametitle} | ${game.developer}`;
 
            
             gameList.appendChild(li);

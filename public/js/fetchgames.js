@@ -1,7 +1,9 @@
+//Functionality script for submitting games
 const gameList = document.getElementById("gameList");
 const statusDisplay = document.getElementById("status");
 const form = document.getElementById("gameForm");
 
+//get token
 const token = localStorage.getItem("token");
 if(!token){
     window.location.href = "/secondpage.html";
@@ -14,6 +16,7 @@ function authHeaders(){
     }
 }
 
+//Load games and show games 
 async function loadGames(){
     gameList.innerHTML = "";
     statusDisplay.textContent = "Loading Games...";
@@ -33,10 +36,12 @@ async function loadGames(){
             statusDisplay.textContent = "No games available";
             return;
         }
-console.log("games =", games, typeof games);
+
+        //Loop through the games and create edit and delete buttons
         games.forEach(game => {
             const li = document.createElement("li");
 
+            
             const deleteBtn = document.createElement("button");
             deleteBtn.textContent = "Delete";
             deleteBtn.type = "button";
@@ -47,7 +52,7 @@ console.log("games =", games, typeof games);
 
             
 
-            //add func call
+            //function call for the buttons
             deleteBtn.addEventListener("click", async ()=>{
                 if(!confirm(`Delete ${game.gametitle}`)){
                     return; 
@@ -59,8 +64,8 @@ console.log("games =", games, typeof games);
             editBtn.addEventListener("click", async ()=>{
                 window.location.href = `/edit.html?id=${encodeURIComponent(game._id)}`
             });
-
-            li.textContent = `${game.gametitle} | `;
+            //list games
+            li.textContent = `${game.gametitle} | ${game.developer} `;
 
             li.appendChild(editBtn);
             li.appendChild(deleteBtn);
@@ -75,11 +80,12 @@ console.log("games =", games, typeof games);
     }
 }
 
-
+//function cal for the submit button
 form.addEventListener("submit", async (e)=>{
     e.preventDefault();
 
     const gametitle = document.getElementById("gametitle").value;
+     const developer = document.getElementById("developer").value;
     
     statusDisplay.textContent = "Submitting new game...";
     console.log("Form route");
@@ -87,7 +93,7 @@ form.addEventListener("submit", async (e)=>{
         await fetch("/api/games", {
             method:"POST",
             headers:authHeaders(),
-            body:JSON.stringify({gametitle})
+            body:JSON.stringify({gametitle,developer})
         });
 
         form.reset()
@@ -110,6 +116,8 @@ async function deleteGame(id){
     statusDisplay.textContent = "Game Deleted.";
 }
 
+
+//function for logout button
 document.getElementById("logoutBtn").addEventListener("click", ()=>{
     localStorage.removeItem("token");
     window.location.href = "/secondpage.html";

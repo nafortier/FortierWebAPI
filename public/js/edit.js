@@ -20,6 +20,7 @@ async function loadGame(){
     const game = await res.json();
 
     document.getElementById("gametitle").value = game.gametitle ?? "";
+    document.getElementById("developer").value = game.developer ?? "";
 
 }
 
@@ -28,12 +29,12 @@ form.addEventListener("submit", async (e)=>{
     e.preventDefault();
 
     const gametitle = document.getElementById("gametitle").value.trim();
-
+    const developer = document.getElementById("developer").value.trim();
     
     const res = await fetch(`/api/games/${encodeURIComponent(id)}`, {
         method:"PUT",
         headers:{"Content-Type":"application/json","Authorization":"Bearer " + token},
-        body:JSON.stringify({gametitle}),
+        body:JSON.stringify({gametitle, developer}),
     });
 
 

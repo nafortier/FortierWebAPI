@@ -4,8 +4,10 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const router  = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;  //Require JWT
 if(!JWT_SECRET)throw new Error("Missing JWT Secret");
+
+//Functions for registering and logging in
 
 router.post("/register", async (req,res)=>{
     console.log("Register")
