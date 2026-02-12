@@ -61,14 +61,15 @@ app.get("/thirdpage", (req,res)=>{
     res.sendFile(path.join(__dirname, "public", "thirdpage.html"));
 });
 
-/*/JSON
+//JSON
 app.get("/api/data", (req,res)=>{
+    console.log("here")
     res.json({player:"JordanTron", 
     timestamp:new Date(),
     games:["Fortnite", "Arc Raiders", "Portal2"]
 
     });
-});*/
+});
 
 app.get("/api/games", (req,res)=>{
     fs.readFile("data.json", "utf-8", (err,data)=>{
