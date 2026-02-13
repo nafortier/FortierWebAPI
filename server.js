@@ -7,12 +7,12 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 const MONGO_URI = process.env.MONGO_URI;
 
-//const authRoutes = require("./routes/auth");
-app.use("/api/highscores", require("./routes/Highscores") );
 
+
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/api/Highscore", require("./routes/Highscores") );
 
 if(!MONGO_URI){
     console.error("Missing Database Connection");

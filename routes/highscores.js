@@ -16,15 +16,17 @@ router.post("/", async (req,res)=>{
     
     try{
 
-        const userId = req.user.sub;
+       
        //console.log(userId)
-        const {playername, score, level} = req.body;
-        const createdScore = await HighScore.create({userId, playername, score, level});
+        const {playername, score} = req.body;
+      
+        const createdScore = await HighScore.create({playername,score});
 
         res.status(201).json({ok:true, createdScore});
 
     } catch(err)
     {
+        console.log("bruh")
         res.status(400).json({ok:false, error:"Invalid High Score"});
     }
 });

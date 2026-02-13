@@ -16,6 +16,7 @@ var highScoreElements = document.querySelector('.highscore');
 
 
 
+
 bgMain.src = "images/rocks.jpg";
 cookieSprite.src = "images/cookie.png";
 
@@ -316,6 +317,8 @@ gameStates[2] = function(){
     }
 
     
+
+    
 }
 
 
@@ -349,5 +352,46 @@ function scoreTimer(){
         setTimeout(scoreTimer, 1000);
     }
 }
+
+
+
+const highScoreForm = document.getElementById("form");
+const nameInput = document.getElementById("input");
+const submitButton = document.getElementById("button");
+
+submitButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const playername = nameInput.value;
+    const currentScore = score; 
+    
+    console.log("Submitting score...");
+
+    try {
+        const response = await fetch("/api/Highscore", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+    
+            body: JSON.stringify({ 
+                playername: playername, 
+                score: currentScore 
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            console.log("Success:", result);
+            alert("High Score Saved!");
+            highScoreElements.style.display = "none";
+        } else {
+            console.error("Server Error:", result.error);
+        }
+    } catch (err) {
+        console.error("Network Error:", err);
+    }
+});
 
 

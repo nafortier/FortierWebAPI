@@ -2,12 +2,12 @@ const mongoose = require("mongoose")
 
 const highScoreSchema = new mongoose.Schema(
     {
-            userId:{type:String},
             playername:{type:String, required:true, maxlength:24 },
-            score:{type:Number, required:true, min:0},
-            level:{type:Number, default:1, min:1}
+            score:{type:Number, required:true, min:0}
     },
-    {timestamps: true}
+    {timestamps: true,
+    collection: "highscore"
+    }
 );
 
 module.exports = mongoose.model("HighScore", highScoreSchema);

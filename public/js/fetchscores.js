@@ -2,28 +2,15 @@ const scoreList = document.getElementById("scoreList");
 const statusDisplay = document.getElementById("status");
 const form = document.getElementById("scoreForm");
 
-const token = localStorage.getItem("token");
-if(!token){
-    window.location.href = "/login.html";
-}
+var c = document.querySelector("canvas");
+var ctx = c.getContext("2d");
 
-function authHeaders(){
-    return{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + token
-    }
-}
 async function loadScores(){
     scoreList.innerHTML = "";
     statusDisplay.textContent = "Loading Scores...";
 
     try{
-        const res = await fetch("/api/highscores", {headers:{"Authorization":"Bearer " + token}});
-        if(res.status === 401){
-            localStorage.removeItem("token");
-            window.location.href = "/login.html";
-            return;
-        }
+        
         const scores = await res.json();
 
         if(scores.length === 0){
@@ -76,19 +63,16 @@ form.addEventListener("submit", async (e)=>{
     e.preventDefault();
 
     const playername = document.getElementById("playername").value;
-     const score = document.getElementById("score").value;
       const level = document.getElementById("level").value;
     statusDisplay.textContent = "Submitting new score...";
     console.log("Form route");
     try{
         await fetch("/api/highscores", {
             method:"POST",
-            headers:authHeaders(),
-            body:JSON.stringify({playername,score,level})
+            body:JSON.stringify({playername,score})
         });
 
-        form.reset()
-        loadScores();
+
     }catch(err){
         statusDisplay.textContent = "Failed to submit score";
     }
