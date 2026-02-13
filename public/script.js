@@ -14,6 +14,8 @@ var bgMain = new Image();
 var cookieSprite = new Image();
 var highScoreElements = document.querySelector('.highscore');
 
+
+
 bgMain.src = "images/rocks.jpg";
 cookieSprite.src = "images/cookie.png";
 
@@ -23,7 +25,7 @@ bgMain.onload = function(){
 }
 
 cookieSprite.onload = function(){
-    main();
+   // main();
 }
 
 function randomRange(high, low){

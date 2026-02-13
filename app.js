@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 
-const highScoreRoutes = require("./routes/highscores");
+const highScoreRoutes = require("./routes/Highscores");
 
 const authRoutes = require("./routes/auth");
 
@@ -20,7 +20,7 @@ app.use(express.json());
 //connect with router
 
 app.use("/api/auth", authRoutes);
-app.use("/api/highscores", require("./routes/highscores") );
+app.use("/api/highscores", require("./routes/Highscores") );
 
 
 //static route

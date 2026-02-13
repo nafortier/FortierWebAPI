@@ -1,12 +1,12 @@
 const express = require("express");
 const HighScore = require("../models/HighScore");
-const requireAuth = require("../middleware/requireauth")
+
 
 const router = express.Router();
 
 
 
-router.use(requireAuth);
+
 
 
 
