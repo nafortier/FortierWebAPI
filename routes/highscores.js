@@ -18,8 +18,8 @@ router.post("/", async (req,res)=>{
 
         const userId = req.user.sub;
        //console.log(userId)
-        const {playername, score, level} = req.body;
-        const createdScore = await HighScore.create({userId, playername, score, level});
+        const {screenname, firstname, lastname, date, score} = req.body;
+        const createdScore = await HighScore.create({userId, screenname, firstname, lastname, date, score});
 
         res.status(201).json({ok:true, createdScore});
 
@@ -91,15 +91,22 @@ router.put("/:id", async (req,res)=>{
         const userId = req.user.sub;
 
         const payload = {};
-        if (typeof req.body.playername === "string"){
-            payload.playername = req.body.playername;
+        if (typeof req.body.screenname === "string"){
+            payload.screenname = req.body.screenname;
+        }
+        if (typeof req.body.firstname === "string"){
+            payload.firstname = req.body.firstname;
+        }
+        if (typeof req.body.lastname === "string"){
+            payload.lastname = req.body.lastname;
+        }
+        if (typeof req.body.date === "string"){
+            payload.date = req.body.date;
         }
         if (typeof req.body.score === "number"){
             payload.score = req.body.score;
         }
-        if (typeof req.body.level === "number"){
-            payload.level = req.body.level;
-        }
+        
 
         const updatedEntry = await HighScore.findByIdAndUpdate({_id:id, userId},payload,{
             new:true,
@@ -110,7 +117,7 @@ router.put("/:id", async (req,res)=>{
             res.status(404).json({ok:false, error:"Score Entry not found"})
         }
         res.json({ok:true, updatedEntry});
-       // res.redirect("api/highscores.html");
+  
 
     } catch(err){
         res.status(400).json({ok:false, error:"Update Failed"})
