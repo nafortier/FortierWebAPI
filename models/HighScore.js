@@ -3,11 +3,13 @@ const mongoose = require("mongoose")
 const highScoreSchema = new mongoose.Schema(
     {
             userId:{type:String},
-            playername:{type:String, required:true, maxlength:24 },
-            score:{type:Number, required:true, min:0},
-            level:{type:Number, default:1, min:1}
+            screenname:{type:String, required:true, maxlength:24 },
+            firstname:{type:String, required:true, maxlength:24 },
+            lastname:{type:String, required:true, maxlength:24 },
+            date:{type:String, required:true, maxlenght:64},
+            score:{type:Number, required:true, min:0}
     },
     {timestamps: true}
 );
 
-module.exports = mongoose.model("HighScore", highScoreSchema);
+module.exports = mongoose.model("GameScore", highScoreSchema);
