@@ -12,7 +12,7 @@ const MONGO_URI = process.env.MONGO_URI;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
-app.use("/api/Highscore", require("./routes/Highscores") );
+app.use("/api/Highscore", require("./routes/highscores") );
 
 if(!MONGO_URI){
     console.error("Missing Database Connection");

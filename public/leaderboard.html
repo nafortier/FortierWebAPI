@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav><a href="index.html">Back to Game</a></nav>
+    <h1>Top 10 Scores</h1>
+    <div id="leaderboard-container">
+        </div>
+
+    <script>
+        async function fetchScores() {
+            const res = await fetch('/api/Highscore');
+            const data = await res.json();
+            const container = document.getElementById('leaderboard-container');
+            
+            if(data.length === 0) {
+                container.innerHTML = "<p>No scores yet</p>";
+                return;
+            }
+
+            const list = data.map((entry, i) => `
+                <div class="score-row">
+                    <span>${i+1}. ${entry.playername}</span>
+                    <span>${entry.score} pts</span>
+                </div>
+            `).join('');
+            container.innerHTML = list;
+        }
+        fetchScores();
+    </script>
+</body>
+</html>

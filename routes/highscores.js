@@ -34,11 +34,8 @@ router.post("/", async (req,res)=>{
 //get
 router.get("/", async (req,res)=>{
     try{
-        //
-        const userId = req.user.sub;
-        console.log("Fetch working");
-        //
-        const scores = await HighScore.find({userId})
+        
+        const scores = await HighScore.find()
         .sort({score:-1,createdAt:1})
         .limit(10);
         res.json(scores);

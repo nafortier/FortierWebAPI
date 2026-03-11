@@ -386,6 +386,7 @@ submitButton.addEventListener("click", async (e) => {
             console.log("Success:", result);
             alert("High Score Saved!");
             highScoreElements.style.display = "none";
+            window.location.href = "leaderboard.html";
         } else {
             console.error("Server Error:", result.error);
         }
