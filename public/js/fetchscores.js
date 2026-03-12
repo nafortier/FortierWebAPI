@@ -60,7 +60,7 @@ async function loadScores(){
             li.textContent = `${score.screenname} - Score: ${score.score} - Wins: ${score.wins} | `;
 
             li.appendChild(editBtn);
-            //li.appendChild(deleteBtn);
+            li.appendChild(deleteBtn);
             scoreList.appendChild(li);
         });
 
@@ -97,7 +97,7 @@ form.addEventListener("submit", async (e)=>{
     }
 });
 
-async function deleteScore(id){
+/*async function deleteScore(id){
     statusDisplay.textContent = "Deleting...";
 
     const res = await fetch(`/api/highscores/${id}`, {method:"DELETE"});
@@ -107,7 +107,35 @@ async function deleteScore(id){
     }
 
     statusDisplay.textContent = "Score Deleted.";
+}*/
+async function deleteScore(id) {
+    statusDisplay.textContent = "Deleting...";
+
+    try {
+        const res = await fetch(`/api/highscores/${id}`, {
+            method: "DELETE",
+            headers: authHeaders() 
+        });
+
+        if (!res.status === 401) {
+       
+             localStorage.removeItem("token");
+             window.location.href = "/login.html";
+             return;
+        }
+
+        if (!res.ok) {
+            statusDisplay.textContent = "Delete failed";
+            return;
+        }
+
+        statusDisplay.textContent = "Score Deleted.";
+    } catch (err) {
+        statusDisplay.textContent = "Error during deletion";
+    }
 }
+
+
 
 document.getElementById("logoutBtn").addEventListener("click", ()=>{
     localStorage.removeItem("token");
