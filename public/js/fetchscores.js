@@ -113,5 +113,10 @@ document.getElementById("logoutBtn").addEventListener("click", ()=>{
     localStorage.removeItem("token");
     window.location.href = "/login.html";
 })
+document.getElementById("winBtn").addEventListener("click", ()=>{
+    
+    window.location.href = "/wins.html";
+})
+
 
 loadScores();
