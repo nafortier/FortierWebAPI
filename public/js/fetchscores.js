@@ -60,7 +60,7 @@ async function loadScores(){
             li.textContent = `${score.screenname} - Score: ${score.score} - Wins: ${score.wins} | `;
 
             li.appendChild(editBtn);
-            li.appendChild(deleteBtn);
+            //li.appendChild(deleteBtn);
             scoreList.appendChild(li);
         });
 
