@@ -19,23 +19,29 @@ async function loadScore(){
         }
     const score = await res.json();
 
-    document.getElementById("playername").value = score.playername ?? "";
+    document.getElementById("screenname").value = score.screenname ?? "";
+    document.getElementById("firstname").value = score.firstname ?? "";
+    document.getElementById("lastname").value = score.lastname ?? "";
+    document.getElementById("date").value = score.date ?? "";
     document.getElementById("score").value = score.score ?? 0;
-    document.getElementById("level").value = score.level ?? "";
+    document.getElementById("wins").value = score.wins ?? 0;
 }
 
 
 form.addEventListener("submit", async (e)=>{
     e.preventDefault();
 
-    const playername = document.getElementById("playername").value.trim();
+    const screenname = document.getElementById("screenname").value.trim();
+    const firstname = document.getElementById("firstname").value.trim();
+    const lastname = document.getElementById("lastname").value.trim();
+    const date = document.getElementById("date").value.trim();
     const score = Number(document.getElementById("score").value);
-    const level = Number(document.getElementById("level").value);
+    const wins = Number(document.getElementById("wins").value);
 
     const res = await fetch(`/api/highscores/${encodeURIComponent(id)}`, {
         method:"PUT",
         headers:{"Content-Type":"application/json","Authorization":"Bearer " + token},
-        body:JSON.stringify({playername, score, level}),
+        body:JSON.stringify({screenname,firstname,lastname,date,score,wins}),
     });
 
     window.location.href = "/highscores.html";

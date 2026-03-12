@@ -46,7 +46,7 @@ async function loadScores(){
 
             //add func call
             deleteBtn.addEventListener("click", async ()=>{
-                if(!confirm(`Delete ${score.playername}'s score`)){
+                if(!confirm(`Delete ${score.screenname}'s score`)){
                     return; 
                 }
                 await deleteScore(score._id);
@@ -57,7 +57,7 @@ async function loadScores(){
                 window.location.href = `/edit.html?id=${encodeURIComponent(score._id)}`
             });
 
-            li.textContent = `${score.playername} - ${score.score} - ${score.level} | `;
+            li.textContent = `${score.screenname} - Score: ${score.score} - Wins: ${score.wins} | `;
 
             li.appendChild(editBtn);
             li.appendChild(deleteBtn);
@@ -75,16 +75,19 @@ async function loadScores(){
 form.addEventListener("submit", async (e)=>{
     e.preventDefault();
 
-    const playername = document.getElementById("playername").value;
-     const score = document.getElementById("score").value;
-      const level = document.getElementById("level").value;
+    const screenname = document.getElementById("screenname").value;
+    const firstname = document.getElementById("firstname").value;
+    const lastname = document.getElementById("lastname").value;
+    const date = document.getElementById("date").value;
+    const score = document.getElementById("score").value;
+      const wins = document.getElementById("wins").value;
     statusDisplay.textContent = "Submitting new score...";
     console.log("Form route");
     try{
         await fetch("/api/highscores", {
             method:"POST",
             headers:authHeaders(),
-            body:JSON.stringify({playername,score,level})
+            body:JSON.stringify({screenname,firstname,lastname,date,score,wins})
         });
 
         form.reset()

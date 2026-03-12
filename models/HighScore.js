@@ -7,9 +7,10 @@ const highScoreSchema = new mongoose.Schema(
             firstname:{type:String, required:true, maxlength:24 },
             lastname:{type:String, required:true, maxlength:24 },
             date:{type:String, required:true, maxlenght:64},
-            score:{type:Number, required:true, min:0}
+            score:{type:Number, required:true, min:0},
+            wins:{type:Number, required:true, min:0}
     },
     {timestamps: true}
 );
 
-module.exports = mongoose.model("GameScore", highScoreSchema);
+module.exports = mongoose.model("Game", highScoreSchema);

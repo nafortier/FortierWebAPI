@@ -18,8 +18,8 @@ router.post("/", async (req,res)=>{
 
         const userId = req.user.sub;
        //console.log(userId)
-        const {screenname, firstname, lastname, date, score} = req.body;
-        const createdScore = await HighScore.create({userId, screenname, firstname, lastname, date, score});
+        const {screenname, firstname, lastname, date, score, wins} = req.body;
+        const createdScore = await HighScore.create({userId, screenname, firstname, lastname, date, score, wins});
 
         res.status(201).json({ok:true, createdScore});
 
@@ -105,6 +105,9 @@ router.put("/:id", async (req,res)=>{
         }
         if (typeof req.body.score === "number"){
             payload.score = req.body.score;
+        }
+        if (typeof req.body.wins === "number"){
+            payload.wins = req.body.wins;
         }
         
 
